@@ -1,12 +1,13 @@
 import React from "react";
 import logo from "../assets/investor-logo.png";
-const Header = () => {
+
+export const Header = () => {
   return (
-    <header id="header">
-      <h1>My Investment Calculator</h1>
+    <header id="header" className="flex flex-col items-center">
+      <h1 className="font-['Roboto Condensed'] font-bold">My Investment Calculator</h1>
       <img src={logo} alt="invest-logo" />
     </header>
   );
 };
 
-export default Header;
+

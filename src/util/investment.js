@@ -1,24 +1,40 @@
-// This function expects a JS object as an argument
-// The object should contain the following properties
-// - initialInvestment: The initial investment amount
-// - annualInvestment: The amount invested every year
-// - expectedReturn: The expected (annual) rate of return
-// - duration: The investment duration (time frame)
-export function calculateInvestmentResults(
-  { initialInvestment, annualInvestment, expectedReturn, duration },
+export const MARKET_SCENARIOS = {
+  default: {
+    label: "Default",
+    returnRate: 0
+  },
+  conservative: {
+    label: "Conservative (4%)",
+    returnRate: 4
+  },
+  moderate: {
+    label: "Moderate (7%)",
+    returnRate: 7
+  },
+  aggresive: {
+    label: "Aggresive (10%)",
+    returnRate: 10
+  }
+}
+
+export function calculateWealthGrowth(
+  { initialInvestment, monthly, years, scenario },
   results
 ) {
-  // const results = [];
-  let investmentValue = initialInvestment;
-
-  for (let i = 0; i < duration; i++) {
-    const interestEarnedInYear = investmentValue * (expectedReturn / 100);
-    investmentValue += interestEarnedInYear + annualInvestment;
+  let total = initialInvestment;
+  let totalInvested = initialInvestment;
+  const returnRate = MARKET_SCENARIOS[scenario].returnRate;
+  
+  for (let year = 1; year <= years; year++) {
+    const interest = total * (returnRate / 100);
+    total += interest + monthly * 12;
+    totalInvested += monthly * 12;
     results.push({
-      year: i + 1, // year identifier
-      interest: interestEarnedInYear, // the amount of interest earned in this year
-      valueEndOfYear: investmentValue, // investment value at end of year
-      annualInvestment: annualInvestment, // investment added in this year
+      year,
+      total: Math.round(total), 
+      invested: totalInvested, 
+      interest: Math.round(interest),
+      scenario: MARKET_SCENARIOS[scenario].label
     });
   }
 
@@ -28,9 +44,9 @@ export function calculateInvestmentResults(
 // The browser-provided Intl API is used to prepare a formatter object
 // This object offers a "format()" method that can be used to format numbers as currency
 // Example Usage: formatter.format(1000) => yields "$1,000"
-export const formatter = new Intl.NumberFormat("en-US", {
+export const formatter = new Intl.NumberFormat("id-ID", {
   style: "currency",
-  currency: "USD",
+  currency: "IDR",
   minimumFractionDigits: 0,
   maximumFractionDigits: 0,
 });

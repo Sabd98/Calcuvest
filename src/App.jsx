@@ -1,36 +1,36 @@
 import { useState } from "react";
-import Header from "./components/header";
-import UserInput from "./components/UserInput";
-import Result from "./components/Result";
+import { UserInput } from "./components/UserInput";
+import { Result } from "./components/Result";
 
-function App() {
+export default function App() {
   const [input, setInput] = useState({
-    initialInvestment: 10000,
-    annualInvestment: 1200,
-    expectedReturn: 6,
-    duration: 10,
+    initialInvestment: 10000000,
+    monthly: 50000,
+    years: 10,
+    scenario: "default",
   });
-
-  function handleInput(inputIndentifier, newValue) {
+  function handleInput(inputIdentifier, newValue) {
     setInput((prevUserInput) => {
       return {
         ...prevUserInput,
-        [inputIndentifier]: +newValue,
+        [inputIdentifier]:
+          inputIdentifier === "scenario" ? newValue : +newValue,
       };
     });
   }
-  const inputIsValid = input.duration >= 1;
 
   return (
     <>
-      <Header />
-      <UserInput userInput={input} onChange={handleInput} />
-      {!inputIsValid && (
-        <p className="center">Please enter a duration greater than zero.</p>
-      )}
-      {inputIsValid && <Result input={input} />}
+      <section className="max-w-[50rem] space-y-2 mx-auto bg-gray-100 p-6 rounded-lg shadow-md">
+        <div className="space-y-4">
+          <h1 className="font-['Roboto Condensed'] text-2xl font-bold  text-gray-800">
+            Calcuvest - Wealth Accumulation Calculator
+          </h1>
+
+          <UserInput userInput={input} onChange={handleInput} />
+          <Result input={input} />
+        </div>
+      </section>
     </>
   );
 }
-
-export default App;
